@@ -1,40 +1,28 @@
 # %%
 from cProfile import label
 from pathlib import Path
+from typing import List
 from transformers import pipeline
 import cv2
 from PIL import Image
 
-model = pipeline("image-segmentation")
-
 # %%
-def get_single_frame(as_PIL = True):
-    camera = cv2.VideoCapture(0)
-    # while True:
-    ret, frame = camera.read()
-        # cv2.imshow('frame',frame)
-        # if cv2.waitKey(1) == ord('q'):
-            # break
-    camera.release()
-    cv2.destroyAllWindows()
-    if as_PIL:
-        return Image.fromarray(frame)
-    return frame
+from lib.get_images import get_images_folder, get_phone_images_as_imgs(), get_images_folder
 
-# %%
+# img = get_single_frame()
+img = get_phone_images_as_imgs()[0]
 
-img = get_single_frame()
 
 # %%
 # RUN THE MODEL
-res = model(img)
+model = pipeline("image-segmentation")
+# %%
 
+res = model(img)
+print(f"response is {res}")
 # %%
-# MAKE somewhere to save the results
-data_folder = Path("data")
-images_folder = data_folder / "images"
-images_folder.mkdir(exist_ok=True)
 # %%
+images_folder = get_images_folder()
 img.save(images_folder/ "original.jpg")
 # %%
 # res is a list of dictionaries, each with a 'score, label, and mask (as a PIL image)
@@ -43,6 +31,6 @@ for label_res in res:
     mask_img = label_res['mask']
     mask_img.save(filename)
 
-
+ 
 
 # %%
