@@ -1,4 +1,5 @@
-# Trying to make a simple chat bot with hugging face
+# Playing with hugging face demos
+Originall, I was trying to make a simple chat bot with hugging face
 
 * https://www.youtube.com/watch?v=QEaBAZQCtwE
 
